@@ -1,36 +1,90 @@
 package rpg.main;
 
-import rpg.entities.CharacterPVP;
 import rpg.items.TypeWeapon;
 import rpg.items.Weapon;
 
 public class Main {
     public static void main(String[] args) {
 
-        //TEST V1
-        CharacterPVP hero = new CharacterPVP("Brayan",100,100,10,1,5);
-        CharacterPVP villain = new CharacterPVP("El papu :v",100,100,10,1,100);
-        Weapon bow = new Weapon("Matapapus3000", 10,100, TypeWeapon.RANGED);
+        Weapon longSword = new Weapon("Long Sword", 50, 100, 10, TypeWeapon.PHYSICAL);
+        Weapon bow = new Weapon("bow", 25, 150, 10, TypeWeapon.RANGED);
+
+        //Mostrar DATOS Antes
+        System.out.println("------------------------------");
+        System.out.println("Nombre actual: "+longSword.getName());
+        System.out.println("Durabilidad actual: "+longSword.getDurability());
+        System.out.println("Daño actual: "+longSword.getDamage());
 
 
 
-        System.out.println("Vida inicial de " + villain.getName() + ": " + villain.getHealth()); //ANTES
+        //Reducir durabilidad
+        longSword.reduceDurability(120);
 
+        System.out.println("------------------------------");
 
+        //Revisar si se ha fragmentado
+        if (longSword.isBroken()) {
+            System.out.println("Tu arma se ha fragmentado");
+        } else {
+            System.out.println("Tu arma no se ha fragmentado");
+        }
 
+        System.out.println("------------------------------");
+        // Mostrar DATOS Despues
+        System.out.println("Nombre actual: "+longSword.getName());
+        System.out.println("Durabilidad actual: "+longSword.getDurability());
+        System.out.println("Daño actual: "+longSword.getDamage());
+        System.out.println("------------------------------");
 
-        hero.attack(villain);//Se Ataca a Villain su vida deberia bajar
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
+        System.out.println("TEST REPARAR ARMA");
+        System.out.println("------------------------------");
+        System.out.println("Nombre actual: "+ bow.getName());
+        System.out.println("Durabilidad actual: "+ bow.getDurability());
+        System.out.println("Daño actual: "+ bow.getDamage());
+        System.out.println("------------------------------");
 
-        System.out.println("¡" + hero.getName() + " atacó a " + villain.getName() + " con un " +hero.getEquippedWeapon().getName()+"!");
-        System.out.println("Vida actual de " + villain.getName() + ": " + villain.getHealth()); //Despues
+        //Reducir durabilidad al arma
+        bow.reduceDurability(50);
+        System.out.println("Tu arma ha sufrido 50 de daño en durabilidad");
+        System.out.println("------------------------------");
+        System.out.println("Nombre actual: "+ bow.getName());
+        System.out.println("Durabilidad actual: "+ bow.getDurability());
+        System.out.println("------------------------------");
 
-        hero.equipWeapon(bow); //Se equipa arco
-        hero.attack(villain); //Se ataca por una segunda vez con una nueva arma
+        //Reparar arma
+        bow.repair(30);
+        System.out.println("Tu arma se ha reparado 30 de durabilidad");
+        System.out.println("------------------------------");
 
-        System.out.println("¡" + hero.getName() + " atacó a " + villain.getName() + " con un " +hero.getEquippedWeapon().getName()+"!");
-        System.out.println("Vida actual de " + villain.getName() + ": " + villain.getHealth()); //Despues V2
+        //Mostrar la reparacion
+        System.out.println("Nombre actual: "+ bow.getName());
+        System.out.println("Durabilidad actual: "+ bow.getDurability());
+        System.out.println("------------------------------");
 
+        //Fragmentar el arma
+        bow.reduceDurability(130);
 
+        //Revisar si se ha fragmentado
+        if (bow.isBroken()) {
+            System.out.println("Tu arma se ha fragmentado");
+        } else {
+            System.out.println("Tu arma no se ha fragmentado");
+        }
+        System.out.println("------------------------------");
+        System.out.println("Nombre actual: "+ bow.getName());
+        System.out.println("Durabilidad actual: "+ bow.getDurability());
+        System.out.println("------------------------------");
+        //Reparar arma
+        bow.repair(30);
+        System.out.println("Tu arma no se ha reparado");
+        System.out.println("------------------------------");
+        System.out.println("Nombre actual: "+ bow.getName());
+        System.out.println("Durabilidad actual: "+ bow.getDurability());
+        System.out.println("Daño actual: "+ bow.getDamage());
+        System.out.println("------------------------------");
     }
 }
