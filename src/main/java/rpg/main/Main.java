@@ -1,90 +1,44 @@
 package rpg.main;
 
+import rpg.entities.Combatant;
+import rpg.entities.Team;
 import rpg.items.TypeWeapon;
 import rpg.items.Weapon;
 
 public class Main {
     public static void main(String[] args) {
 
-        Weapon longSword = new Weapon("Long Sword", 50, 100, 10, TypeWeapon.PHYSICAL);
-        Weapon bow = new Weapon("bow", 25, 150, 10, TypeWeapon.RANGED);
+        Combatant badGuy = new Combatant("BadGuy", 100, 100, 100, 50,1.0, 50, Team.ENEMY);
+        Combatant goodGuy = new Combatant("GoodGuy", 100, 100, 100, 100,2.0, 100, Team.ALLY);
+        Weapon swordG = new Weapon("Sword", 12,100,5,TypeWeapon.PHYSICAL);
+        Weapon swordB = new Weapon("Sword", 12,100,5,TypeWeapon.PHYSICAL);
+        goodGuy.equipWeapon(swordG);
+        badGuy.equipWeapon(swordB);
 
-        //Mostrar DATOS Antes
-        System.out.println("------------------------------");
-        System.out.println("Nombre actual: "+longSword.getName());
-        System.out.println("Durabilidad actual: "+longSword.getDurability());
-        System.out.println("Daño actual: "+longSword.getDamage());
+        double tiempo = 0;
+       while (badGuy.isAlive() && goodGuy.isAlive()) {
+
+           if(badGuy.isAlive() && badGuy.canAttack(tiempo)) {
+
+               double attack = badGuy.attack(goodGuy);
+               badGuy.scheduleNextAttack();
+               System.out.println("["+tiempo+" ms] "+ badGuy.getName()+" ataca a "+ goodGuy.getName() +": "+ attack+" de daño." );
+           }
 
 
 
-        //Reducir durabilidad
-        longSword.reduceDurability(120);
+           if (goodGuy.isAlive() && goodGuy.canAttack(tiempo)) {
+               double attack = goodGuy.attack(badGuy);
+               goodGuy.scheduleNextAttack();
+               System.out.println("["+tiempo+" ms] "+ goodGuy.getName()+" ataca a "+ badGuy.getName() +": "+ attack+" de daño." );
+           }
+           tiempo += 100;
+       }
 
-        System.out.println("------------------------------");
-
-        //Revisar si se ha fragmentado
-        if (longSword.isBroken()) {
-            System.out.println("Tu arma se ha fragmentado");
-        } else {
-            System.out.println("Tu arma no se ha fragmentado");
+        if (badGuy.isAlive()){
+            System.out.println("El ganador es "+badGuy.getName());
+        } else if (goodGuy.isAlive()) {
+            System.out.println("El ganador es "+goodGuy.getName());
         }
-
-        System.out.println("------------------------------");
-        // Mostrar DATOS Despues
-        System.out.println("Nombre actual: "+longSword.getName());
-        System.out.println("Durabilidad actual: "+longSword.getDurability());
-        System.out.println("Daño actual: "+longSword.getDamage());
-        System.out.println("------------------------------");
-
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-        System.out.println("TEST REPARAR ARMA");
-        System.out.println("------------------------------");
-        System.out.println("Nombre actual: "+ bow.getName());
-        System.out.println("Durabilidad actual: "+ bow.getDurability());
-        System.out.println("Daño actual: "+ bow.getDamage());
-        System.out.println("------------------------------");
-
-        //Reducir durabilidad al arma
-        bow.reduceDurability(50);
-        System.out.println("Tu arma ha sufrido 50 de daño en durabilidad");
-        System.out.println("------------------------------");
-        System.out.println("Nombre actual: "+ bow.getName());
-        System.out.println("Durabilidad actual: "+ bow.getDurability());
-        System.out.println("------------------------------");
-
-        //Reparar arma
-        bow.repair(30);
-        System.out.println("Tu arma se ha reparado 30 de durabilidad");
-        System.out.println("------------------------------");
-
-        //Mostrar la reparacion
-        System.out.println("Nombre actual: "+ bow.getName());
-        System.out.println("Durabilidad actual: "+ bow.getDurability());
-        System.out.println("------------------------------");
-
-        //Fragmentar el arma
-        bow.reduceDurability(130);
-
-        //Revisar si se ha fragmentado
-        if (bow.isBroken()) {
-            System.out.println("Tu arma se ha fragmentado");
-        } else {
-            System.out.println("Tu arma no se ha fragmentado");
-        }
-        System.out.println("------------------------------");
-        System.out.println("Nombre actual: "+ bow.getName());
-        System.out.println("Durabilidad actual: "+ bow.getDurability());
-        System.out.println("------------------------------");
-        //Reparar arma
-        bow.repair(30);
-        System.out.println("Tu arma no se ha reparado");
-        System.out.println("------------------------------");
-        System.out.println("Nombre actual: "+ bow.getName());
-        System.out.println("Durabilidad actual: "+ bow.getDurability());
-        System.out.println("Daño actual: "+ bow.getDamage());
-        System.out.println("------------------------------");
     }
 }

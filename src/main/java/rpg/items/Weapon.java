@@ -82,7 +82,7 @@ public class Weapon { //Estructura de un arma
 
     private void validateType(TypeWeapon type) {
         if(type == null) {
-            throw new IllegalArgumentException("El Enum asignado no puede ser declarado");
+
         }
     }
 
