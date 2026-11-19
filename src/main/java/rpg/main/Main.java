@@ -1,44 +1,60 @@
 package rpg.main;
 
+import rpg.combat.CombatEngine;
 import rpg.entities.Combatant;
 import rpg.entities.Team;
 import rpg.items.TypeWeapon;
 import rpg.items.Weapon;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
 
-        Combatant badGuy = new Combatant("BadGuy", 100, 100, 100, 50,1.0, 50, Team.ENEMY);
-        Combatant goodGuy = new Combatant("GoodGuy", 100, 100, 100, 100,2.0, 100, Team.ALLY);
-        Weapon swordG = new Weapon("Sword", 12,100,5,TypeWeapon.PHYSICAL);
-        Weapon swordB = new Weapon("Sword", 12,100,5,TypeWeapon.PHYSICAL);
-        goodGuy.equipWeapon(swordG);
-        badGuy.equipWeapon(swordB);
+        ArrayList<Combatant> allies = new ArrayList<>();
+        ArrayList<Combatant> enemies = new ArrayList<>();
 
-        double tiempo = 0;
-       while (badGuy.isAlive() && goodGuy.isAlive()) {
+        // EQUIPO ALIADO
+        Combatant warrior = new Combatant("Warrior", 150, 30, 25, 100, 1.2, 50, Team.ALLY);
+        Combatant archer = new Combatant("Archer", 95, 50, 95, 40, 1.8, 20, Team.ALLY);
+        Combatant mage = new Combatant("Mage", 75, 130, 40, 15, 1.0, 15, Team.ALLY);
 
-           if(badGuy.isAlive() && badGuy.canAttack(tiempo)) {
+        // EQUIPO ENEMIGO
+        Combatant bandit = new Combatant("Bandit", 130, 20, 35, 70, 1.3, 40, Team.ENEMY);
+        Combatant hunter = new Combatant("Hunter", 90, 40, 80, 35, 1.7, 15, Team.ENEMY);
+        Combatant sorcerer = new Combatant("Sorcerer", 80, 120, 30, 15, 1.1, 10, Team.ENEMY);
 
-               double attack = badGuy.attack(goodGuy);
-               badGuy.scheduleNextAttack();
-               System.out.println("["+tiempo+" ms] "+ badGuy.getName()+" ataca a "+ goodGuy.getName() +": "+ attack+" de daño." );
-           }
+        // ARMAS ALIADAS
+        Weapon ironSword = new Weapon("Iron Sword", 16, 100, 60, TypeWeapon.PHYSICAL);
+        Weapon longBow = new Weapon("Long Bow", 12, 100, 20, TypeWeapon.RANGED);
+        Weapon magicStaff = new Weapon("Magic Staff", 14, 100, 10, TypeWeapon.STAFF);
 
 
+        // ARMAS ENEMIGAS
+        Weapon battleAxe = new Weapon("Battle Axe", 15, 100, 45, TypeWeapon.PHYSICAL);
+        Weapon crossbow = new Weapon("Crossbow", 11, 100, 25, TypeWeapon.RANGED);
+        Weapon cursedStaff = new Weapon("Cursed Staff", 13, 100, 10, TypeWeapon.STAFF);
 
-           if (goodGuy.isAlive() && goodGuy.canAttack(tiempo)) {
-               double attack = goodGuy.attack(badGuy);
-               goodGuy.scheduleNextAttack();
-               System.out.println("["+tiempo+" ms] "+ goodGuy.getName()+" ataca a "+ badGuy.getName() +": "+ attack+" de daño." );
-           }
-           tiempo += 100;
-       }
+        //EQUIPAMIENTO
+        warrior.equipWeapon(ironSword);
+        archer.equipWeapon(longBow);
+        mage.equipWeapon(magicStaff);
 
-        if (badGuy.isAlive()){
-            System.out.println("El ganador es "+badGuy.getName());
-        } else if (goodGuy.isAlive()) {
-            System.out.println("El ganador es "+goodGuy.getName());
-        }
+        bandit.equipWeapon(battleAxe);
+        hunter.equipWeapon(crossbow);
+        sorcerer.equipWeapon(cursedStaff);
+
+        //AGREGACION A EQUIPOS
+        allies.add(mage);
+        allies.add(archer);
+        allies.add(warrior);
+
+        enemies.add(sorcerer);
+        enemies.add(hunter);
+        enemies.add(bandit);
+
+        CombatEngine pvp1 = new CombatEngine(allies, enemies);
+        pvp1.startCombat();
+
     }
 }
