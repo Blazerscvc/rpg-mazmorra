@@ -29,7 +29,8 @@ public class CombatEngine {
                     }
                     double attack = enemy.attack(target);
                     enemy.scheduleNextAttack();
-                    System.out.println("["+tiempo+" ms] "+ enemy.getName()+" ataca a "+ target.getName() +": "+ attack+" de daño." );
+                    System.out.printf("[%.0f ms] %s ataca a %s: %.2f de daño.%n",
+                            tiempo, enemy.getName(), target.getName(), attack);
                 }
             }
 
@@ -42,7 +43,8 @@ public class CombatEngine {
                     }
                     double attack = ally.attack(target);
                     ally.scheduleNextAttack();
-                    System.out.println("["+tiempo+" ms] "+ ally.getName()+" ataca a "+ target.getName() +": "+ attack+" de daño." );
+                    System.out.printf("[%.0f ms] %s ataca a %s: %.2f de daño.%n",
+                            tiempo, ally.getName(), target.getName(), attack);
                 }
             }
             tiempo += 100;

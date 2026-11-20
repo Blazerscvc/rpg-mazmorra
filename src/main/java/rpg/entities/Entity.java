@@ -6,6 +6,7 @@ public abstract class Entity { //Abstract como referencia general del comportami
     private double health;
     private double maxHealth;
     private double resistance;
+    private static final double EPSILON = 1e-9;
 
     public Entity(String name, double maxHealth, double resistance) { //Constructor
         validResistance(resistance);
@@ -66,6 +67,7 @@ public abstract class Entity { //Abstract como referencia general del comportami
         double tempHealth = health;
         health = health - finalDamage;
         health = Math.max(0, health);
+        if (health > 0 && health < EPSILON) { health = 0; }
         return tempHealth - health;
     }
 
