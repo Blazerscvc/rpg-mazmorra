@@ -11,6 +11,7 @@ public class Combatant extends Entity { //Entidad PvE & PVP
     private double attackSpeed;
     private double nextAttackTime;
     private Team team;
+    private boolean inCombat; //Se asume por logica con False/True
 
 
     private Weapon equippedWeapon;
@@ -73,7 +74,7 @@ public class Combatant extends Entity { //Entidad PvE & PVP
 
     //GETTER
 
-
+    public boolean isInCombat() { return inCombat; }
     public double getAttackSpeed() {
         return attackSpeed;
     }
@@ -100,13 +101,17 @@ public class Combatant extends Entity { //Entidad PvE & PVP
         return true;
     }
 
+    public void setInCombat(boolean inCombat) {
+        this.inCombat = inCombat;
+    }
+
     public void scheduleNextAttack() {
         nextAttackTime += 1000/attackSpeed;
     }
 
     public void equipWeapon(Weapon weapon) {
         validEquippedWeapon(weapon);
-        if(weapon.getReqStrength() > strength) {
+        if(weapon.getReqStrength() > strength || inCombat) {
             return;
         }
         this.equippedWeapon = weapon;
