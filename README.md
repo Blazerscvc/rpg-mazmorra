@@ -89,13 +89,16 @@ src/main/java/rpg/main/Main.java
 - Sistema de durabilidad, reparación y fragmentación permanente.
 - Armas especiales con durabilidad infinita.
 - Equipamiento inicial para todos los combatientes.
+- Bloqueo de cambios de equipamiento durante el combate mediante `try/finally`.
 
 ### Motor de combate automático
 
 - Motor independiente mediante `CombatEngine`.
+- Máquina de estados del combate (`CombatState`: `READY`, `RUNNING`, `FINISHED`).
 - Enfrentamientos entre múltiples aliados y enemigos.
 - Combates 3 vs. 3 probados manualmente.
 - Ataques programados según la velocidad individual.
+- Procesamiento de ataques por instantes simulados mediante `processTick()`.
 - Selección de objetivos vivos.
 - Detección automática del equipo ganador.
 - Registro de ataques y daño efectivo con dos decimales.
@@ -120,17 +123,19 @@ Esto permite que los personajes de primera línea reciban los ataques antes que 
 
 - [x] Sistema de entidades y estadísticas.
 - [x] Armas y equipamiento.
-- [x] Combate automático.
-- [x] Combate por equipos.
-- [x] Formaciones automáticas.
+- [x] Bloqueo de cambios de equipamiento durante el combate.
+- [x] Combate automático por equipos.
+- [x] Formaciones automáticas según el arma.
+- [x] Máquina de estados del combate (`CombatState`).
+- [x] Procesamiento de ataques por instante simulado (`processTick`).
 - [x] Mejorar la presentación de los registros de combate.
 - [x] Corregir residuos de precisión en la vida.
 - [ ] Incorporar pruebas automatizadas.
 
 ### Fase 2 — MVP jugable
 
+- [ ] Refactorización del motor para simulación por ticks individuales (`advanceTick`).
 - [ ] Preparación del equipo antes del combate.
-- [ ] Bloqueo de cambios de equipamiento durante el combate.
 - [ ] Habilidades básicas y tiempos de reutilización (*cooldowns*).
 - [ ] Exploración sencilla de mazmorras.
 - [ ] Progresión básica de personajes.
