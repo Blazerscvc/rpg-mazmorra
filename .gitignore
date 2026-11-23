@@ -38,3 +38,12 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Configuración local de Obsidian
+docs/.obsidian/
+
+# Ideas y apuntes privados
+docs/raw/
+
+# Instrucciones locales para Gemini
+GEMINI.md
