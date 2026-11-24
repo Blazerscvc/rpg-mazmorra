@@ -24,6 +24,7 @@ public class Main {
         Combatant hunter = new Combatant("Hunter", 90, 40, 80, 35, 1.7, 15, Team.ENEMY);
         Combatant sorcerer = new Combatant("Sorcerer", 80, 120, 30, 15, 1.1, 10, Team.ENEMY);
 
+
         // ARMAS ALIADAS
         Weapon ironSword = new Weapon("Iron Sword", 16, 100, 60, TypeWeapon.PHYSICAL);
         Weapon longBow = new Weapon("Long Bow", 12, 100, 20, TypeWeapon.RANGED);
@@ -54,7 +55,10 @@ public class Main {
         enemies.add(bandit);
 
         CombatEngine pvp1 = new CombatEngine(allies, enemies);
+
         pvp1.startCombat();
+
+
 
     }
 }

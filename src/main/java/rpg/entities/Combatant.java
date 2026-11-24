@@ -91,6 +91,7 @@ public class Combatant extends Entity { //Entidad PvE & PVP
     public double attack(Entity target) {
         double totalDamage = this.equippedWeapon.getDamage();
         double damage = target.doDamage(totalDamage);
+        this.equippedWeapon.reduceDurability(1); //Reduce Durability
         return damage;
     }
 
@@ -107,6 +108,10 @@ public class Combatant extends Entity { //Entidad PvE & PVP
 
     public void scheduleNextAttack() {
         nextAttackTime += 1000/attackSpeed;
+    }
+
+    public void resetAttackTime() {
+        nextAttackTime = 1000/attackSpeed;
     }
 
     public void equipWeapon(Weapon weapon) {

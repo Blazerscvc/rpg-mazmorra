@@ -9,6 +9,8 @@ public class CombatEngine {
     private CombatState state = CombatState.READY;
     private ArrayList<Combatant> allies;
     private ArrayList<Combatant> enemies;
+    private static final int TICK_DURATION = 10;
+    private double currentTime = 0;
 
     public CombatEngine(ArrayList<Combatant> allies, ArrayList<Combatant> enemies) {
         this.allies = allies;
@@ -16,41 +18,63 @@ public class CombatEngine {
     }
 
     public void startCombat() {
+        initCombat();
+        while(getState() == CombatState.RUNNING) { advanceTick(); }
+    }
+
+    public CombatState getState() {
+        return state;
+    }
+
+    public void initCombat() {
         if(state != CombatState.READY) {
             throw new IllegalStateException("El combate solo puede iniciarse en estado READY.");
         }
+        try {
+            currentTime = 0;
+            allies.sort(Comparator.comparingInt(character -> getFormationPriority(character)));
+            enemies.sort(Comparator.comparingInt(character -> getFormationPriority(character)));
 
-        allies.sort(Comparator.comparingInt(character -> getFormationPriority(character)));
-        enemies.sort(Comparator.comparingInt(character -> getFormationPriority(character)));
+            resetTeamAttackTimes(allies);
+            resetTeamAttackTimes(enemies);
 
-       try {
-           setTeamCombatState(allies, true);
-           setTeamCombatState(enemies, true);
+            setTeamCombatState(allies, true);
+            setTeamCombatState(enemies, true);
 
-           double tiempo = 0;
-
-           state = CombatState.RUNNING;
-
-           while (combatantsTeamAlive(allies) && combatantsTeamAlive(enemies)) {
-
-               processTick(tiempo);
-               tiempo += 100;
-           }
-       } finally {
-           setTeamCombatState(allies, false);
-           setTeamCombatState(enemies, false);
-           state = CombatState.FINISHED;
-       }
-
-        if (combatantsTeamAlive(enemies)){
-            System.out.println("El ganador es el equipo enemigo");
-        } else if (combatantsTeamAlive(allies)) {
-            System.out.println("El ganador es el equipo aliado");
+            state = CombatState.RUNNING;
+        } catch (RuntimeException e) {
+            finishCombat();
+            throw e;
         }
-
     }
 
-    private void processTick(double tiempo) {
+    public void advanceTick() {
+        if(getState() != CombatState.RUNNING) {
+            throw new IllegalStateException("No hay ningun combate en ejecucion.");
+        }
+
+        try {
+            processTick(currentTime);
+            currentTime += TICK_DURATION;
+
+            if(!combatantsTeamAlive(allies) || !combatantsTeamAlive(enemies)) {
+                finishCombat();
+                announceWinner();
+            }
+        } catch (RuntimeException e) {
+            finishCombat();
+            throw e;
+        }
+    }
+
+    private void finishCombat() {
+        setTeamCombatState(allies, false);
+        setTeamCombatState(enemies, false);
+
+        state = CombatState.FINISHED;
+    }
+
+    private void processTick(double tiempo) { //HERE FIGTH MADRAZOS PVP ESTA WEA
         for (Combatant enemy : enemies) {
 
             if(enemy.isAlive() && enemy.canAttack(tiempo)) {
@@ -78,10 +102,6 @@ public class CombatEngine {
                         tiempo, ally.getName(), target.getName(), attack);
             }
         }
-    }
-
-    public CombatState getState() {
-        return state;
     }
 
     private boolean combatantsTeamAlive(ArrayList<Combatant> team) {
@@ -117,5 +137,19 @@ public class CombatEngine {
             return 2;
         }
         throw new IllegalStateException("Tipo de arma no reconocida.");
+    }
+
+    private void resetTeamAttackTimes(ArrayList<Combatant> team) {
+        for (Combatant character : team) {
+            character.resetAttackTime();
+        }
+    }
+
+    private void announceWinner() {
+        if (combatantsTeamAlive(enemies)){
+            System.out.println("El ganador es el equipo enemigo");
+        } else if (combatantsTeamAlive(allies)) {
+            System.out.println("El ganador es el equipo aliado");
+        }
     }
 }
