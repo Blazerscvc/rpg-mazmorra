@@ -43,7 +43,7 @@ build/
 docs/.obsidian/
 
 # Ideas y apuntes privados
-docs/raw/
+/docs/06 - Privado/
 
 # Instrucciones locales para Gemini
 GEMINI.md

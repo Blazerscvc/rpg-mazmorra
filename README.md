@@ -17,16 +17,16 @@ Cada combatiente tiene su propia velocidad de ataque y actúa cuando el tiempo s
 **Ejemplo real de un combate 3 vs. 3 (salida abreviada):**
 
 ```text
-[600 ms] Hunter ataca a Warrior: 7,33 de daño.
-[600 ms] Archer ataca a Bandit: 8,57 de daño.
-[800 ms] Bandit ataca a Warrior: 10,00 de daño.
-[900 ms] Warrior ataca a Bandit: 11,43 de daño.
-[1000 ms] Sorcerer ataca a Warrior: 8,67 de daño.
+[560 ms] Archer ataca a Bandit: 8,57 de daño.
+[590 ms] Hunter ataca a Warrior: 7,33 de daño.
+[770 ms] Bandit ataca a Warrior: 10,00 de daño.
+[840 ms] Warrior ataca a Bandit: 11,43 de daño.
+[910 ms] Sorcerer ataca a Warrior: 8,67 de daño.
 [1000 ms] Mage ataca a Bandit: 10,00 de daño.
 ...
-[8200 ms] Sorcerer ataca a Archer: 10,83 de daño.
-[8400 ms] Archer ataca a Sorcerer: 10,91 de daño.
-[8900 ms] Archer ataca a Sorcerer: 10,91 de daño.
+[8190 ms] Sorcerer ataca a Archer: 10,83 de daño.
+[8340 ms] Archer ataca a Sorcerer: 10,91 de daño.
+[8890 ms] Archer ataca a Sorcerer: 10,91 de daño.
 El ganador es el equipo aliado
 ```
 
@@ -86,10 +86,10 @@ src/main/java/rpg/main/Main.java
 
 - Armas de tipo `PHYSICAL`, `RANGED` y `STAFF`.
 - Requisitos de fuerza para equipar armas.
-- Sistema de durabilidad, reparación y fragmentación permanente.
+- Sistema de durabilidad, reparación, desgaste por ataque y fragmentación permanente.
 - Armas especiales con durabilidad infinita.
 - Equipamiento inicial para todos los combatientes.
-- Bloqueo de cambios de equipamiento durante el combate mediante `try/finally`.
+- Bloqueo de cambios de equipamiento durante el combate mediante el ciclo de vida del motor y limpieza ante RuntimeException.
 
 ### Motor de combate automático
 
@@ -98,7 +98,7 @@ src/main/java/rpg/main/Main.java
 - Enfrentamientos entre múltiples aliados y enemigos.
 - Combates 3 vs. 3 probados manualmente.
 - Ataques programados según la velocidad individual.
-- Procesamiento de ataques por instantes simulados mediante `processTick()`.
+- Procesamiento por ticks de 10 ms mediante `advanceTick()`, con reloj por instancia y reinicio de temporizadores.
 - Selección de objetivos vivos.
 - Detección automática del equipo ganador.
 - Registro de ataques y daño efectivo con dos decimales.
@@ -134,7 +134,8 @@ Esto permite que los personajes de primera línea reciban los ataques antes que 
 
 ### Fase 2 — MVP jugable
 
-- [ ] Refactorización del motor para simulación por ticks individuales (`advanceTick`).
+- [x] Refactorización del motor para simulación por ticks individuales (`advanceTick`).
+- [ ] Desacoplar los registros de combate de la consola.
 - [ ] Preparación del equipo antes del combate.
 - [ ] Habilidades básicas y tiempos de reutilización (*cooldowns*).
 - [ ] Exploración sencilla de mazmorras.
@@ -185,3 +186,7 @@ RPG Mazmorra es una iniciativa de aprendizaje personal, no una entrega académic
 El desarrollo se realiza de manera incremental, con el propósito de escribir y comprender personalmente el código, aplicar principios de programación orientada a objetos y adquirir experiencia práctica en la construcción de sistemas de videojuegos.
 
 Se prioriza comprender cada mecánica, probar su funcionamiento y mantener una estructura de código que pueda ampliarse progresivamente.
+
+## Documentación
+
+[Índice de documentación](docs/Inicio%20-%20RPG%20Mazmorra.md) · [Roadmap](docs/03%20-%20Desarrollo/Roadmap%20del%20MVP.md) · [Pruebas](docs/05%20-%20Pruebas/Pruebas%20de%20combate.md)

@@ -2,242 +2,73 @@
 
 > RPG de mazmorras con combate automático, desarrollado en Java.
 
-**Estado:** 🟢 Prototipo de combate funcional en consola.
+**Estado:** Prototipo de combate funcional en consola; MVP jugable en desarrollo.
 
-**Objetivo principal:** Completar un MVP jugable con combate automático, preparación de personajes, exploración básica y una interfaz gráfica mediante JavaFX.
+**Objetivo:** Preparación de personajes, combate automático, exploración básica e interfaz JavaFX. Escribir y comprender personalmente el código.
 
-**Filosofía de desarrollo:** Aprender programación Java escribiendo y comprendiendo personalmente el código.
-
----
-
-## 📚 Wiki del proyecto
-
-Documentación técnica de los sistemas implementados:
+## Sistemas
 
 - [[Sistema de combate]]
-    
 - [[Sistema de armas]]
-    
-- [[Formaciones automáticas]]
-    
+- [[Sistema de entidades]]
+- [[Arquitectura del RPG]]
+- [[Conceptos de Java]]
+- [[Roadmap del MVP]]
+- [[Historial de desarrollo]]
+- [[Decisiones técnicas]]
+- [[Casos pendientes]]
 
-**Documentación pendiente:**
+## Prioridad actual
 
-- [[Arquitectura del RPG]] — Nota por desarrollar.
-    
+- [ ] Separar los registros de consola de las reglas del motor.
+- [ ] Crear una primera interfaz sencilla con JavaFX.
 
-Las notas técnicas deben reflejar el comportamiento real del código y distinguir claramente las funcionalidades implementadas de las ideas futuras.
+Consultar [[Reloj de simulación]] y [[Ciclo de vida del combate]].
 
----
+## Avances
 
-## 🎯 Objetivo actual
+- [x] [[Sistema de entidades]] y [[Estadísticas de personajes]].
+- [x] [[Mitigación de daño]] y [[Precisión decimal]].
+- [x] [[Sistema de armas]], durabilidad, reparación, fragmentación y armas especiales.
+- [x] [[Bloqueo de equipamiento]].
+- [x] [[Formaciones automáticas]] y [[Selección de objetivos]].
+- [x] [[Máquina de estados del combate]] y procesamiento interno por ticks.
+- [x] [[Registro de combate]] y determinación del ganador.
+- [x] Validación del tipo de arma no nulo.
+- [x] Combate 3 vs. 3 probado manualmente.
+- [x] [[Reloj de simulación]] por instancia y resolución de 10 ms.
+- [x] [[Ciclo de vida del combate]] con avance independiente mediante `advanceTick()`.
+- [x] [[Reinicio de temporizadores de ataque]] al preparar una nueva batalla.
+- [x] [[Desgaste al atacar]]: un punto tras aplicar el daño.
+- [x] Manejo de errores mediante [[Try y catch]].
 
-**Preparar** `**CombatEngine**` **para ejecutar el combate mediante ticks independientes y facilitar su integración con JavaFX.**
+## Pruebas y límites
 
-### Próximas tareas
+[[Pruebas de combate]] reúne los resultados históricos. No hay pruebas automatizadas verificadas.
 
-- Convertir el reloj simulado en un atributo de `CombatEngine`.
-    
-- Separar el inicio, avance y finalización del combate.
-    
-- Implementar `advanceTick()` para procesar un tick por llamada.
-    
-- Conservar la ejecución automática de batallas por consola.
-    
-- Adaptar la gestión de `CombatState` al nuevo ciclo de vida.
-    
-- Separar los registros de consola de la lógica del motor.
-    
-- Crear una primera representación gráfica sencilla con JavaFX.
-    
+- La ejecución completa refactorizada se verificó en consola: victoria aliada, último ataque a 8890 ms. Faltan pruebas específicas de avance externo, reutilización de combatientes y excepciones.
+- FINISHED no distingue final normal de excepción dentro del bloque protegido.
+- `setInCombat()` es público.
+- Los registros utilizan System.out.
+- El desgaste automático está implementado; falta registrar una prueba aislada de fragmentación durante un ataque.
+- Maná y agilidad aún no intervienen en combate.
 
-### Prioridades posteriores del MVP
+## Después de la prioridad actual
 
-- Diseñar la preparación de personajes antes de combatir.
-    
-- Implementar un inventario básico.
-    
-- Incorporar una exploración sencilla de mazmorras.
-    
-- Conectar las mecánicas principales en un ciclo de juego funcional.
-    
+- [ ] Preparación e inventario básico.
+- [ ] Exploración sencilla y ciclo jugable.
+- [ ] Pruebas automatizadas.
 
----
+Las expansiones futuras se reservan para después del MVP.
 
-## ✅ Avances completados
-
-### Sistema de personajes
-
-- Entidades y estadísticas.
-    
-- Sistema de salud y resistencia.
-    
-- Velocidades de ataque individuales.
-    
-- Cálculo de daño y reducción mediante resistencia.
-    
-
-### Sistema de armas
-
-- Armas con estadísticas y requisitos.
-    
-- Equipamiento según la fuerza del personaje.
-    
-- Durabilidad y reparación.
-    
-- Fragmentación permanente de armas rotas.
-    
-- Penalización de daño para armas rotas.
-    
-- Armas especiales con durabilidad infinita.
-    
-- Bloqueo de equipamiento durante el combate.
-    
-
-### Sistema de combate
-
-- Combate automático entre equipos.
-    
-- Simulación de enfrentamientos 3 vs. 3.
-    
-- Formaciones automáticas según el tipo de arma.
-    
-- Selección del primer objetivo vivo según la formación.
-    
-- Procesamiento de ataques mediante `processTick()`.
-    
-- Simulación con incrementos de 100 ms.
-    
-- Máquina de estados `CombatState`.
-    
-- Validación para impedir ejecutar nuevamente un combate finalizado.
-    
-- Gestión del bloqueo de equipamiento mediante `try/finally`.
-    
-- Registro de ataques con dos decimales.
-    
-- Determinación del equipo ganador.
-    
-
-### Correcciones realizadas
-
-- Corrección de residuos decimales en los puntos de vida.
-    
-- Corrección de un error de recursión en `isInCombat()`.
-    
-- Verificación del desbloqueo del equipamiento al finalizar.
-    
-
----
-
-## 🧪 Pruebas realizadas
-
-### Combate 3 vs. 3
-
-**Equipo aliado:** Warrior, Archer y Mage.
-
-**Equipo enemigo:** Bandit, Hunter y Sorcerer.
-
-**Resultado:** victoria del equipo aliado.
-
-**Último ataque registrado:** 8900 ms.
-
-### Máquina de estados
-
-- Estado inicial: `READY`.
-    
-- Estado durante la ejecución: `RUNNING`.
-    
-- Estado después del combate: `FINISHED`.
-    
-- Una segunda ejecución del mismo combate produce `IllegalStateException`.
-    
-
-### Sistema de equipamiento
-
-Se comprobó que el cambio de arma se rechaza durante el combate y vuelve a permitirse cuando `inCombat` es `false`.
-
-**Nota:** las pruebas actuales son principalmente manuales. Queda pendiente incorporar pruebas automatizadas.
-
----
-
-## 🏗️ Decisiones de arquitectura
-
-- `CombatEngine` controla las reglas y el tiempo simulado del combate.
-    
-- JavaFX será responsable de representar visualmente el estado del juego.
-    
-- La lógica del combate debe funcionar independientemente de la interfaz.
-    
-- El código Java es la fuente de verdad sobre las funcionalidades existentes.
-    
-- Se prioriza una arquitectura sencilla y funcional antes de incorporar sistemas complejos.
-    
-
----
-
-## 🐛 Limitaciones conocidas
-
-- `startCombat()` todavía ejecuta todos los ticks mediante un `while`.
-    
-- El motor aún no permite avanzar un tick por llamada pública.
-    
-- `CombatState.FINISHED` no distingue una batalla completada de una interrumpida por errores.
-    
-- `setInCombat()` todavía permite modificaciones externas del estado.
-    
-- Los mensajes de combate siguen vinculados a `System.out`.
-    
-- El sistema no cuenta todavía con pruebas automatizadas completas.
-    
-
----
-
-## 💡 Ideas futuras
-
-Las ideas nuevas se registran primero en `raw/` para evitar distraernos del MVP.
-
-Entre las ideas futuras están:
-
-- Enemigos con mecánicas de corrupción.
-    
-- Habilidades especiales.
-    
-- Estrategias avanzadas de selección de objetivos.
-    
-- Formaciones personalizadas.
-    
-- Arena de combate 2D.
-    
-- Sistemas de progresión y equipamiento más avanzados.
-    
-
-Estas ideas no deben confundirse con funcionalidades implementadas.
-
----
-
-## 🔗 Repositorio
+## Repositorio y reglas
 
 [GitHub — RPG Mazmorra](https://github.com/Blazerscvc/rpg-mazmorra)
 
-La documentación técnica se almacena en `docs/wiki/` y se versiona junto al proyecto.
+Las carpetas numeradas separan sistemas, aprendizaje, desarrollo, decisiones técnicas y pruebas. La carpeta local privada, la configuración de Obsidian y GEMINI.md se excluyen de Git.
 
-Las instrucciones locales de Gemini se encuentran en `GEMINI.md` y están excluidas del repositorio público.
-
----
-
-## 📌 Reglas de desarrollo
-
-1. Priorizar un MVP jugable antes de añadir mecánicas complejas.
-    
-2. Escribir y comprender personalmente el código Java.
-    
-3. Utilizar la IA como tutor, no como sustituto del aprendizaje.
-    
-4. Probar las funcionalidades antes de marcarlas como completadas.
-    
-5. Mantener Obsidian sincronizado con los avances reales.
-    
-6. Registrar los cambios importantes mediante Git.
-    
-7. Evitar refactorizaciones y funcionalidades que no aporten valor al objetivo actual.
+1. Priorizar un MVP jugable.
+2. El estudiante escribe Java; la IA orienta y revisa.
+3. El código es la fuente de verdad; distinguir pruebas y planes.
+4. Mantener notas breves, conectadas y sin duplicación innecesaria.
+5. Registrar cambios importantes con Git.
